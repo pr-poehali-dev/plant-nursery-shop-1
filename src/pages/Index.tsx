@@ -7,6 +7,13 @@ const HYDRANGEA_IMAGE = "https://cdn.poehali.dev/projects/c57465b6-bcb9-4ceb-b33
 
 type Tab = "home" | "catalog" | "delivery" | "useful" | "contacts";
 
+export interface CartItem {
+  name: string;
+  price: number;
+  age: string;
+  qty: number;
+}
+
 const NAV_ITEMS: { id: Tab; label: string }[] = [
   { id: "home", label: "Главная" },
   { id: "catalog", label: "Каталог" },
@@ -35,52 +42,420 @@ const SUBCATEGORIES: Record<string, string[]> = {
 
 const AGE_FILTERS = ["1 год", "2 года", "3 года", "4 года"];
 
-const PRODUCTS: Record<string, { name: string; price: string; age: string; desc: string }[]> = {
+const PRODUCTS: Record<string, { name: string; price: number; age: string; desc: string }[]> = {
   "Яблоня": [
-    { name: "Яблоня Антоновка", price: "850 ₽", age: "2 года", desc: "Зимостойкий сорт, обильное плодоношение" },
-    { name: "Яблоня Белый налив", price: "750 ₽", age: "1 год", desc: "Раннеспелый летний сорт" },
-    { name: "Яблоня Грушовка", price: "1 100 ₽", age: "3 года", desc: "Старинный русский сорт" },
-    { name: "Яблоня Мелба", price: "950 ₽", age: "2 года", desc: "Канадский сорт с ароматными плодами" },
+    { name: "Яблоня Антоновка", price: 850, age: "2 года", desc: "Зимостойкий сорт, обильное плодоношение" },
+    { name: "Яблоня Белый налив", price: 750, age: "1 год", desc: "Раннеспелый летний сорт" },
+    { name: "Яблоня Грушовка", price: 1100, age: "3 года", desc: "Старинный русский сорт" },
+    { name: "Яблоня Мелба", price: 950, age: "2 года", desc: "Канадский сорт с ароматными плодами" },
   ],
   "Груша": [
-    { name: "Груша Лада", price: "900 ₽", age: "2 года", desc: "Раннеспелый сорт, высокая урожайность" },
-    { name: "Груша Чижовская", price: "850 ₽", age: "2 года", desc: "Зимостойкая, самоплодная" },
-    { name: "Груша Москвичка", price: "1 200 ₽", age: "3 года", desc: "Осенний сорт отличного вкуса" },
+    { name: "Груша Лада", price: 900, age: "2 года", desc: "Раннеспелый сорт, высокая урожайность" },
+    { name: "Груша Чижовская", price: 850, age: "2 года", desc: "Зимостойкая, самоплодная" },
+    { name: "Груша Москвичка", price: 1200, age: "3 года", desc: "Осенний сорт отличного вкуса" },
   ],
   "Слива": [
-    { name: "Слива Яичная синяя", price: "700 ₽", age: "1 год", desc: "Традиционный сорт средней полосы" },
-    { name: "Слива Скороплодная", price: "850 ₽", age: "2 года", desc: "Ранний срок созревания" },
-    { name: "Слива Алёнушка", price: "950 ₽", age: "3 года", desc: "Крупноплодный сладкий сорт" },
+    { name: "Слива Яичная синяя", price: 700, age: "1 год", desc: "Традиционный сорт средней полосы" },
+    { name: "Слива Скороплодная", price: 850, age: "2 года", desc: "Ранний срок созревания" },
+    { name: "Слива Алёнушка", price: 950, age: "3 года", desc: "Крупноплодный сладкий сорт" },
   ],
   "Вишня": [
-    { name: "Вишня Владимирская", price: "650 ₽", age: "1 год", desc: "Классика русских садов" },
-    { name: "Вишня Молодёжная", price: "800 ₽", age: "2 года", desc: "Самоплодный компактный сорт" },
+    { name: "Вишня Владимирская", price: 650, age: "1 год", desc: "Классика русских садов" },
+    { name: "Вишня Молодёжная", price: 800, age: "2 года", desc: "Самоплодный компактный сорт" },
   ],
   "Ирга": [
-    { name: "Ирга канадская", price: "450 ₽", age: "1 год", desc: "Неприхотливая, ягоды в июле" },
-    { name: "Ирга ольхолистная", price: "550 ₽", age: "2 года", desc: "Высокорослый куст до 5 м" },
+    { name: "Ирга канадская", price: 450, age: "1 год", desc: "Неприхотливая, ягоды в июле" },
+    { name: "Ирга ольхолистная", price: 550, age: "2 года", desc: "Высокорослый куст до 5 м" },
   ],
   "Жимолость": [
-    { name: "Жимолость Синяя птица", price: "400 ₽", age: "1 год", desc: "Ранние ягоды, очень зимостойкая" },
-    { name: "Жимолость Длинноплодная", price: "500 ₽", age: "2 года", desc: "Удлинённые сладкие плоды" },
-    { name: "Жимолость Бакчарский великан", price: "650 ₽", age: "3 года", desc: "Крупноплодный урожайный сорт" },
+    { name: "Жимолость Синяя птица", price: 400, age: "1 год", desc: "Ранние ягоды, очень зимостойкая" },
+    { name: "Жимолость Длинноплодная", price: 500, age: "2 года", desc: "Удлинённые сладкие плоды" },
+    { name: "Жимолость Бакчарский великан", price: 650, age: "3 года", desc: "Крупноплодный урожайный сорт" },
   ],
   "Смородина": [
-    { name: "Смородина Пигмей", price: "350 ₽", age: "1 год", desc: "Крупные чёрные ягоды" },
-    { name: "Смородина Белорусская сладкая", price: "380 ₽", age: "1 год", desc: "Высокоурожайный сорт" },
-    { name: "Смородина Красная виксне", price: "400 ₽", age: "2 года", desc: "Кисло-сладкие ягоды" },
+    { name: "Смородина Пигмей", price: 350, age: "1 год", desc: "Крупные чёрные ягоды" },
+    { name: "Смородина Белорусская сладкая", price: 380, age: "1 год", desc: "Высокоурожайный сорт" },
+    { name: "Смородина Красная виксне", price: 400, age: "2 года", desc: "Кисло-сладкие ягоды" },
   ],
   "Малина": [
-    { name: "Малина Полька", price: "300 ₽", age: "1 год", desc: "Ремонтантный польский сорт" },
-    { name: "Малина Бабье лето", price: "280 ₽", age: "1 год", desc: "Классика ремонтантных сортов" },
-    { name: "Малина Геракл", price: "350 ₽", age: "2 года", desc: "Крупные плотные ягоды" },
+    { name: "Малина Полька", price: 300, age: "1 год", desc: "Ремонтантный польский сорт" },
+    { name: "Малина Бабье лето", price: 280, age: "1 год", desc: "Классика ремонтантных сортов" },
+    { name: "Малина Геракл", price: 350, age: "2 года", desc: "Крупные плотные ягоды" },
   ],
 };
 
-function Header({ active, onNav }: { active: Tab; onNav: (t: Tab) => void }) {
+function fmt(price: number) {
+  return price.toLocaleString("ru-RU") + " ₽";
+}
+
+// ─── CART PANEL ───────────────────────────────────────────────────────────────
+
+type OrderStep = "cart" | "form" | "success";
+
+function CartPanel({
+  cart,
+  onClose,
+  onChangeQty,
+  onRemove,
+}: {
+  cart: CartItem[];
+  onClose: () => void;
+  onChangeQty: (name: string, delta: number) => void;
+  onRemove: (name: string) => void;
+}) {
+  const [step, setStep] = useState<OrderStep>("cart");
+  const [name, setName] = useState("");
+  const [phone, setPhone] = useState("");
+  const [comment, setComment] = useState("");
+  const [delivery, setDelivery] = useState<"post" | "pickup" | "cdek">("post");
+
+  const total = cart.reduce((s, i) => s + i.price * i.qty, 0);
+  const totalQty = cart.reduce((s, i) => s + i.qty, 0);
+
+  const deliveryLabels: Record<string, string> = {
+    post: "Почта России",
+    pickup: "Самовывоз",
+    cdek: "СДЭК",
+  };
+
+  return (
+    <>
+      {/* Overlay */}
+      <div
+        className="fixed inset-0 z-40 bg-black/40 backdrop-blur-sm animate-fade-in"
+        onClick={onClose}
+      />
+
+      {/* Drawer */}
+      <div
+        className="fixed right-0 top-0 bottom-0 z-50 w-full max-w-md flex flex-col shadow-2xl animate-slide-in-right"
+        style={{ backgroundColor: "var(--cream)" }}
+      >
+        {/* Header */}
+        <div
+          className="flex items-center justify-between px-6 py-4 shrink-0"
+          style={{ backgroundColor: "var(--green-deep)" }}
+        >
+          <div className="flex items-center gap-2">
+            <Icon name="ShoppingBasket" size={20} style={{ color: "var(--green-pale)" }} />
+            <span className="font-cormorant text-xl font-medium" style={{ color: "var(--cream)" }}>
+              Корзина
+            </span>
+            {totalQty > 0 && (
+              <span
+                className="text-xs font-golos px-2 py-0.5 rounded-full font-medium"
+                style={{ backgroundColor: "var(--green-mid)", color: "var(--cream)" }}
+              >
+                {totalQty}
+              </span>
+            )}
+          </div>
+          <button onClick={onClose} className="p-1 rounded-lg opacity-70 hover:opacity-100 transition-opacity" style={{ color: "var(--cream)" }}>
+            <Icon name="X" size={22} />
+          </button>
+        </div>
+
+        {/* Steps indicator */}
+        {cart.length > 0 && step !== "success" && (
+          <div className="flex gap-0 shrink-0 border-b" style={{ borderColor: "var(--green-pale)" }}>
+            {(["cart", "form"] as OrderStep[]).map((s, i) => (
+              <button
+                key={s}
+                disabled={s === "form" && step === "cart"}
+                onClick={() => s === "cart" && setStep("cart")}
+                className="flex-1 flex items-center justify-center gap-1.5 py-3 text-sm font-golos transition-colors"
+                style={step === s
+                  ? { color: "var(--green-deep)", fontWeight: 600, borderBottom: "2px solid var(--green-deep)" }
+                  : { color: "var(--green-mid)", opacity: 0.6 }
+                }
+              >
+                <span
+                  className="w-5 h-5 rounded-full text-xs flex items-center justify-center"
+                  style={step === s
+                    ? { backgroundColor: "var(--green-deep)", color: "var(--cream)" }
+                    : { backgroundColor: "var(--green-pale)", color: "var(--green-mid)" }
+                  }
+                >
+                  {i + 1}
+                </span>
+                {s === "cart" ? "Товары" : "Оформление"}
+              </button>
+            ))}
+          </div>
+        )}
+
+        {/* Body */}
+        <div className="flex-1 overflow-y-auto">
+          {/* ── EMPTY ── */}
+          {cart.length === 0 && (
+            <div className="flex flex-col items-center justify-center h-full px-6 text-center gap-4">
+              <div className="text-6xl">🛒</div>
+              <p className="font-cormorant text-2xl font-light" style={{ color: "var(--green-deep)" }}>
+                Корзина пуста
+              </p>
+              <p className="font-golos text-sm text-muted-foreground">
+                Добавьте саженцы из каталога
+              </p>
+              <button
+                onClick={onClose}
+                className="mt-2 px-6 py-2.5 rounded-full font-golos font-medium text-sm transition-all hover:scale-105"
+                style={{ backgroundColor: "var(--green-deep)", color: "var(--cream)" }}
+              >
+                Перейти в каталог
+              </button>
+            </div>
+          )}
+
+          {/* ── CART LIST ── */}
+          {cart.length > 0 && step === "cart" && (
+            <div className="p-5 space-y-3">
+              {cart.map((item) => (
+                <div
+                  key={item.name}
+                  className="bg-white rounded-2xl p-4 shadow-sm flex gap-3 items-start animate-fade-in"
+                  style={{ border: "1px solid var(--green-pale)" }}
+                >
+                  <div
+                    className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0 text-xl"
+                    style={{ backgroundColor: "var(--green-pale)" }}
+                  >
+                    🌱
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <div className="font-golos font-medium text-sm leading-tight mb-0.5" style={{ color: "var(--green-deep)" }}>
+                      {item.name}
+                    </div>
+                    <div className="text-xs text-muted-foreground font-golos mb-2">Возраст: {item.age}</div>
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-1">
+                        <button
+                          onClick={() => onChangeQty(item.name, -1)}
+                          className="w-7 h-7 rounded-lg flex items-center justify-center transition-colors"
+                          style={{ backgroundColor: "var(--green-pale)", color: "var(--green-deep)" }}
+                        >
+                          <Icon name="Minus" size={12} />
+                        </button>
+                        <span className="w-7 text-center font-golos font-medium text-sm" style={{ color: "var(--green-deep)" }}>
+                          {item.qty}
+                        </span>
+                        <button
+                          onClick={() => onChangeQty(item.name, +1)}
+                          className="w-7 h-7 rounded-lg flex items-center justify-center transition-colors"
+                          style={{ backgroundColor: "var(--green-pale)", color: "var(--green-deep)" }}
+                        >
+                          <Icon name="Plus" size={12} />
+                        </button>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <span className="font-cormorant text-base font-semibold" style={{ color: "var(--earth-dark)" }}>
+                          {fmt(item.price * item.qty)}
+                        </span>
+                        <button
+                          onClick={() => onRemove(item.name)}
+                          className="p-1 rounded-lg opacity-40 hover:opacity-80 transition-opacity"
+                          style={{ color: "var(--green-deep)" }}
+                        >
+                          <Icon name="Trash2" size={14} />
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+
+          {/* ── ORDER FORM ── */}
+          {cart.length > 0 && step === "form" && (
+            <div className="p-5 space-y-4 animate-fade-in">
+              <div>
+                <label className="block text-xs font-golos mb-1.5 font-medium" style={{ color: "var(--green-deep)" }}>
+                  Ваше имя *
+                </label>
+                <input
+                  type="text"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  placeholder="Иван Иванов"
+                  className="w-full rounded-xl px-4 py-3 text-sm font-golos focus:outline-none focus:ring-2 border transition-all"
+                  style={{ borderColor: "var(--green-pale)", backgroundColor: "white", color: "var(--green-deep)" }}
+                />
+              </div>
+              <div>
+                <label className="block text-xs font-golos mb-1.5 font-medium" style={{ color: "var(--green-deep)" }}>
+                  Телефон *
+                </label>
+                <input
+                  type="tel"
+                  value={phone}
+                  onChange={(e) => setPhone(e.target.value)}
+                  placeholder="+7 (900) 000-00-00"
+                  className="w-full rounded-xl px-4 py-3 text-sm font-golos focus:outline-none focus:ring-2 border transition-all"
+                  style={{ borderColor: "var(--green-pale)", backgroundColor: "white", color: "var(--green-deep)" }}
+                />
+              </div>
+
+              <div>
+                <label className="block text-xs font-golos mb-2 font-medium" style={{ color: "var(--green-deep)" }}>
+                  Способ доставки
+                </label>
+                <div className="grid grid-cols-3 gap-2">
+                  {(["post", "pickup", "cdek"] as const).map((d) => (
+                    <button
+                      key={d}
+                      onClick={() => setDelivery(d)}
+                      className="py-2.5 rounded-xl text-xs font-golos font-medium transition-all"
+                      style={delivery === d
+                        ? { backgroundColor: "var(--green-deep)", color: "var(--cream)" }
+                        : { backgroundColor: "var(--green-pale)", color: "var(--green-deep)" }
+                      }
+                    >
+                      {deliveryLabels[d]}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {delivery !== "pickup" && (
+                <div className="animate-fade-in">
+                  <label className="block text-xs font-golos mb-1.5 font-medium" style={{ color: "var(--green-deep)" }}>
+                    Адрес доставки
+                  </label>
+                  <input
+                    type="text"
+                    placeholder="Город, улица, дом"
+                    className="w-full rounded-xl px-4 py-3 text-sm font-golos focus:outline-none focus:ring-2 border transition-all"
+                    style={{ borderColor: "var(--green-pale)", backgroundColor: "white", color: "var(--green-deep)" }}
+                  />
+                </div>
+              )}
+
+              <div>
+                <label className="block text-xs font-golos mb-1.5 font-medium" style={{ color: "var(--green-deep)" }}>
+                  Комментарий
+                </label>
+                <textarea
+                  rows={3}
+                  value={comment}
+                  onChange={(e) => setComment(e.target.value)}
+                  placeholder="Пожелания, вопросы по заказу..."
+                  className="w-full rounded-xl px-4 py-3 text-sm font-golos focus:outline-none focus:ring-2 border resize-none transition-all"
+                  style={{ borderColor: "var(--green-pale)", backgroundColor: "white", color: "var(--green-deep)" }}
+                />
+              </div>
+
+              {/* Order summary */}
+              <div className="rounded-2xl p-4 space-y-2" style={{ backgroundColor: "var(--green-pale)" }}>
+                <div className="font-cormorant text-base font-medium mb-2" style={{ color: "var(--green-deep)" }}>
+                  Состав заказа:
+                </div>
+                {cart.map((item) => (
+                  <div key={item.name} className="flex justify-between text-xs font-golos" style={{ color: "var(--green-deep)" }}>
+                    <span className="truncate pr-2">{item.name} × {item.qty}</span>
+                    <span className="shrink-0 font-medium">{fmt(item.price * item.qty)}</span>
+                  </div>
+                ))}
+                <div
+                  className="flex justify-between pt-2 mt-1 font-golos text-sm font-semibold"
+                  style={{ borderTop: "1px solid rgba(45,80,22,0.2)", color: "var(--green-deep)" }}
+                >
+                  <span>Итого:</span>
+                  <span className="font-cormorant text-base">{fmt(total)}</span>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* ── SUCCESS ── */}
+          {step === "success" && (
+            <div className="flex flex-col items-center justify-center h-full px-6 text-center gap-5 animate-fade-in">
+              <div
+                className="w-20 h-20 rounded-full flex items-center justify-center text-4xl"
+                style={{ backgroundColor: "var(--green-pale)" }}
+              >
+                🌿
+              </div>
+              <div>
+                <p className="font-cormorant text-3xl font-light mb-2" style={{ color: "var(--green-deep)" }}>
+                  Заказ оформлен!
+                </p>
+                <p className="font-golos text-sm text-muted-foreground leading-relaxed max-w-xs">
+                  Мы свяжемся с вами в течение 1–2 часов для подтверждения заказа и уточнения деталей доставки.
+                </p>
+              </div>
+              <button
+                onClick={onClose}
+                className="px-8 py-3 rounded-full font-golos font-medium transition-all hover:scale-105"
+                style={{ backgroundColor: "var(--green-deep)", color: "var(--cream)" }}
+              >
+                Продолжить покупки
+              </button>
+            </div>
+          )}
+        </div>
+
+        {/* Footer */}
+        {cart.length > 0 && step !== "success" && (
+          <div className="shrink-0 p-5 border-t" style={{ borderColor: "var(--green-pale)" }}>
+            <div className="flex items-center justify-between mb-3">
+              <span className="font-golos text-sm text-muted-foreground">{totalQty} товар(а) на сумму</span>
+              <span className="font-cormorant text-xl font-semibold" style={{ color: "var(--green-deep)" }}>
+                {fmt(total)}
+              </span>
+            </div>
+            {step === "cart" && (
+              <button
+                onClick={() => setStep("form")}
+                className="w-full py-3.5 rounded-xl font-golos font-semibold transition-all hover:scale-[1.02] active:scale-[0.98] shadow-md"
+                style={{ backgroundColor: "var(--green-deep)", color: "var(--cream)" }}
+              >
+                Оформить заказ →
+              </button>
+            )}
+            {step === "form" && (
+              <div className="flex gap-2">
+                <button
+                  onClick={() => setStep("cart")}
+                  className="px-4 py-3.5 rounded-xl font-golos font-medium text-sm transition-colors"
+                  style={{ backgroundColor: "var(--green-pale)", color: "var(--green-deep)" }}
+                >
+                  Назад
+                </button>
+                <button
+                  onClick={() => {
+                    if (name.trim() && phone.trim()) setStep("success");
+                  }}
+                  disabled={!name.trim() || !phone.trim()}
+                  className="flex-1 py-3.5 rounded-xl font-golos font-semibold transition-all hover:scale-[1.02] active:scale-[0.98] shadow-md disabled:opacity-50 disabled:cursor-not-allowed disabled:scale-100"
+                  style={{ backgroundColor: "var(--green-deep)", color: "var(--cream)" }}
+                >
+                  Отправить заказ
+                </button>
+              </div>
+            )}
+          </div>
+        )}
+      </div>
+    </>
+  );
+}
+
+// ─── HEADER ───────────────────────────────────────────────────────────────────
+
+function Header({
+  active,
+  onNav,
+  cartCount,
+  onCartOpen,
+}: {
+  active: Tab;
+  onNav: (t: Tab) => void;
+  cartCount: number;
+  onCartOpen: () => void;
+}) {
   const [mobileOpen, setMobileOpen] = useState(false);
   return (
-    <header className="sticky top-0 z-50 shadow-lg" style={{ backgroundColor: "var(--green-deep)" }}>
+    <header className="sticky top-0 z-30 shadow-lg" style={{ backgroundColor: "var(--green-deep)" }}>
       <div className="max-w-7xl mx-auto px-4">
         <div className="flex items-center justify-between h-16 md:h-20">
           <button onClick={() => onNav("home")} className="flex items-center gap-3">
@@ -109,9 +484,33 @@ function Header({ active, onNav }: { active: Tab; onNav: (t: Tab) => void }) {
             ))}
           </nav>
 
-          <button className="md:hidden p-2" style={{ color: "var(--cream)" }} onClick={() => setMobileOpen(!mobileOpen)}>
-            <Icon name={mobileOpen ? "X" : "Menu"} size={24} />
-          </button>
+          <div className="flex items-center gap-2">
+            {/* Cart button */}
+            <button
+              onClick={onCartOpen}
+              className="relative flex items-center gap-2 px-3 py-2 rounded-xl transition-all hover:scale-105"
+              style={{ backgroundColor: cartCount > 0 ? "var(--green-mid)" : "rgba(245,240,232,0.15)", color: "var(--cream)" }}
+            >
+              <Icon name="ShoppingBasket" size={20} />
+              {cartCount > 0 && (
+                <span className="font-golos font-medium text-sm hidden sm:inline">
+                  {cartCount}
+                </span>
+              )}
+              {cartCount > 0 && (
+                <span
+                  className="absolute -top-1 -right-1 w-4 h-4 rounded-full text-xs flex items-center justify-center font-bold sm:hidden"
+                  style={{ backgroundColor: "#e85d04", color: "white" }}
+                >
+                  {cartCount}
+                </span>
+              )}
+            </button>
+
+            <button className="md:hidden p-2" style={{ color: "var(--cream)" }} onClick={() => setMobileOpen(!mobileOpen)}>
+              <Icon name={mobileOpen ? "X" : "Menu"} size={24} />
+            </button>
+          </div>
         </div>
 
         {mobileOpen && (
@@ -135,6 +534,8 @@ function Header({ active, onNav }: { active: Tab; onNav: (t: Tab) => void }) {
     </header>
   );
 }
+
+// ─── HOME ─────────────────────────────────────────────────────────────────────
 
 function HomePage({ onNav }: { onNav: (t: Tab) => void }) {
   return (
@@ -163,40 +564,35 @@ function HomePage({ onNav }: { onNav: (t: Tab) => void }) {
               </button>
               <button
                 onClick={() => onNav("contacts")}
-                className="px-8 py-3 rounded-full font-golos font-medium border transition-all duration-200"
-                style={{ backgroundColor: "rgba(245,240,232,0.15)", color: "var(--cream)", borderColor: "rgba(245,240,232,0.3)" }}
+                className="px-8 py-3 rounded-full font-golos font-medium border transition-all duration-200 hover:scale-105"
+                style={{ borderColor: "rgba(245,240,232,0.5)", color: "var(--cream)", backgroundColor: "rgba(245,240,232,0.12)" }}
               >
-                Связаться с нами
+                Контакты
               </button>
             </div>
           </div>
         </div>
       </section>
 
-      <section className="py-12" style={{ backgroundColor: "var(--cream-dark)" }}>
-        <div className="max-w-7xl mx-auto px-4">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {[
-              { icon: "Leaf", title: "Свой питомник", desc: "Выращиваем саженцы самостоятельно с соблюдением агротехники" },
-              { icon: "ShieldCheck", title: "Гарантия качества", desc: "Сортовая чистота и документы на все растения" },
-              { icon: "Truck", title: "Доставка по России", desc: "Отправляем почтой и транспортными компаниями" },
-            ].map((f) => (
-              <div key={f.title} className="flex gap-4 items-start p-6 bg-white rounded-2xl shadow-sm hover-lift">
-                <div className="w-12 h-12 rounded-xl flex items-center justify-center shrink-0" style={{ backgroundColor: "var(--green-pale)" }}>
-                  <Icon name={f.icon} size={22} style={{ color: "var(--green-deep)" }} />
-                </div>
-                <div>
-                  <div className="font-golos font-semibold mb-1" style={{ color: "var(--green-deep)" }}>{f.title}</div>
-                  <div className="font-golos text-sm text-muted-foreground">{f.desc}</div>
-                </div>
+      <section className="py-14 px-4 max-w-7xl mx-auto">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-14">
+          {[
+            { icon: "Sprout", title: "100+", desc: "Наименований растений" },
+            { icon: "Award", title: "15 лет", desc: "На рынке питомников" },
+            { icon: "Truck", title: "Доставка", desc: "По всей России" },
+            { icon: "ShieldCheck", title: "Гарантия", desc: "Качества саженцев" },
+          ].map((item) => (
+            <div key={item.title} className="text-center py-6 px-4 bg-white rounded-2xl shadow-sm">
+              <div className="w-10 h-10 rounded-xl flex items-center justify-center mx-auto mb-2" style={{ backgroundColor: "var(--green-pale)" }}>
+                <Icon name={item.icon} size={20} style={{ color: "var(--green-deep)" }} />
               </div>
-            ))}
-          </div>
+              <div className="font-cormorant text-2xl font-semibold mb-0.5" style={{ color: "var(--green-deep)" }}>{item.title}</div>
+              <div className="font-golos text-xs text-muted-foreground">{item.desc}</div>
+            </div>
+          ))}
         </div>
-      </section>
 
-      <section className="py-16 max-w-7xl mx-auto px-4">
-        <h2 className="font-cormorant text-4xl text-center mb-2 font-light" style={{ color: "var(--green-deep)" }}>Наш ассортимент</h2>
+        <h2 className="font-cormorant text-3xl md:text-4xl font-light mb-2" style={{ color: "var(--green-deep)" }}>Категории растений</h2>
         <p className="text-center text-muted-foreground font-golos mb-10">Более 100 наименований растений</p>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5">
           {CATEGORIES.map((cat) => (
@@ -231,10 +627,13 @@ function HomePage({ onNav }: { onNav: (t: Tab) => void }) {
   );
 }
 
-function CatalogPage() {
+// ─── CATALOG ──────────────────────────────────────────────────────────────────
+
+function CatalogPage({ onAddToCart }: { onAddToCart: (item: Omit<CartItem, "qty">) => void }) {
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [selectedSub, setSelectedSub] = useState<string | null>(null);
   const [ageFilter, setAgeFilter] = useState<string | null>(null);
+  const [added, setAdded] = useState<string | null>(null);
 
   const handleCategoryClick = (id: string) => {
     if (selectedCategory === id) {
@@ -248,6 +647,12 @@ function CatalogPage() {
 
   const handleSubClick = (sub: string) => {
     setSelectedSub(selectedSub === sub ? null : sub);
+  };
+
+  const handleAdd = (product: { name: string; price: number; age: string }) => {
+    onAddToCart({ name: product.name, price: product.price, age: product.age });
+    setAdded(product.name);
+    setTimeout(() => setAdded(null), 1200);
   };
 
   const currentProducts = selectedSub && PRODUCTS[selectedSub]
@@ -330,7 +735,7 @@ function CatalogPage() {
                     <div key={i} className="bg-white rounded-2xl p-4 shadow-sm hover-lift" style={{ border: "1px solid var(--green-pale)" }}>
                       <div className="flex justify-between items-start mb-2">
                         <h4 className="font-golos font-semibold leading-tight" style={{ color: "var(--green-deep)" }}>{product.name}</h4>
-                        <span className="font-cormorant text-xl font-semibold whitespace-nowrap ml-2" style={{ color: "var(--earth-dark)" }}>{product.price}</span>
+                        <span className="font-cormorant text-xl font-semibold whitespace-nowrap ml-2" style={{ color: "var(--earth-dark)" }}>{fmt(product.price)}</span>
                       </div>
                       <p className="text-sm text-muted-foreground font-golos mb-3">{product.desc}</p>
                       <div className="flex items-center justify-between">
@@ -338,10 +743,18 @@ function CatalogPage() {
                           Возраст: {product.age}
                         </span>
                         <button
-                          className="text-sm px-4 py-1.5 rounded-full font-golos transition-colors"
-                          style={{ backgroundColor: "var(--green-deep)", color: "var(--cream)" }}
+                          onClick={() => handleAdd(product)}
+                          className="text-sm px-4 py-1.5 rounded-full font-golos transition-all hover:scale-105 active:scale-95 flex items-center gap-1.5"
+                          style={added === product.name
+                            ? { backgroundColor: "var(--green-mid)", color: "var(--cream)" }
+                            : { backgroundColor: "var(--green-deep)", color: "var(--cream)" }
+                          }
                         >
-                          В корзину
+                          {added === product.name ? (
+                            <><Icon name="Check" size={13} /> Добавлено</>
+                          ) : (
+                            <><Icon name="ShoppingBasket" size={13} /> В корзину</>
+                          )}
                         </button>
                       </div>
                     </div>
@@ -400,6 +813,8 @@ function CatalogPage() {
   );
 }
 
+// ─── DELIVERY ─────────────────────────────────────────────────────────────────
+
 function DeliveryPage() {
   return (
     <div className="max-w-4xl mx-auto px-4 py-10">
@@ -420,7 +835,6 @@ function DeliveryPage() {
           </div>
         ))}
       </div>
-
       <div className="mt-8 rounded-2xl p-6" style={{ backgroundColor: "var(--green-pale)" }}>
         <h3 className="font-cormorant text-2xl font-medium mb-3" style={{ color: "var(--green-deep)" }}>Важно знать</h3>
         <ul className="space-y-2 font-golos text-sm" style={{ color: "var(--green-deep)" }}>
@@ -441,6 +855,8 @@ function DeliveryPage() {
   );
 }
 
+// ─── USEFUL ───────────────────────────────────────────────────────────────────
+
 function UsefulPage() {
   const [openItem, setOpenItem] = useState<number | null>(null);
   const articles = [
@@ -451,7 +867,6 @@ function UsefulPage() {
     { title: "Гортензии: уход и зимовка", text: "Гортензии любят кислую почву (pH 4,5–5,5), обильный полив и полутень. Перед зимой укрывайте молодые растения лапником или агроволокном. Метельчатые гортензии зимостойки и укрытия не требуют." },
     { title: "Как правильно обрезать смородину?", text: "Обрезку проводят ранней весной до распускания почек. Удаляют ветви старше 5 лет, слабые и загущающие куст побеги. Оставляют 10–15 разновозрастных ветвей. После обрезки куст хорошо освещается и даёт крупные ягоды." },
   ];
-
   return (
     <div className="max-w-3xl mx-auto px-4 py-10">
       <h1 className="font-cormorant text-4xl md:text-5xl font-light mb-2" style={{ color: "var(--green-deep)" }}>Полезное</h1>
@@ -479,6 +894,8 @@ function UsefulPage() {
     </div>
   );
 }
+
+// ─── CONTACTS ─────────────────────────────────────────────────────────────────
 
 function ContactsPage() {
   return (
@@ -510,38 +927,18 @@ function ContactsPage() {
             </div>
           ))}
         </div>
-
         <div className="space-y-5">
           <div className="bg-white rounded-2xl p-6 shadow-sm">
             <h3 className="font-cormorant text-2xl font-medium mb-4" style={{ color: "var(--green-deep)" }}>Написать нам</h3>
             <div className="space-y-3">
-              <input
-                type="text"
-                placeholder="Ваше имя"
-                className="w-full rounded-xl px-4 py-2.5 text-sm font-golos focus:outline-none focus:ring-2 border"
-                style={{ borderColor: "var(--green-pale)", backgroundColor: "var(--cream)", color: "var(--green-deep)" }}
-              />
-              <input
-                type="tel"
-                placeholder="Телефон"
-                className="w-full rounded-xl px-4 py-2.5 text-sm font-golos focus:outline-none focus:ring-2 border"
-                style={{ borderColor: "var(--green-pale)", backgroundColor: "var(--cream)", color: "var(--green-deep)" }}
-              />
-              <textarea
-                rows={3}
-                placeholder="Ваш вопрос или заказ"
-                className="w-full rounded-xl px-4 py-2.5 text-sm font-golos focus:outline-none focus:ring-2 border resize-none"
-                style={{ borderColor: "var(--green-pale)", backgroundColor: "var(--cream)", color: "var(--green-deep)" }}
-              />
-              <button
-                className="w-full py-3 rounded-xl font-golos font-medium transition-colors"
-                style={{ backgroundColor: "var(--green-deep)", color: "var(--cream)" }}
-              >
+              <input type="text" placeholder="Ваше имя" className="w-full rounded-xl px-4 py-2.5 text-sm font-golos focus:outline-none focus:ring-2 border" style={{ borderColor: "var(--green-pale)", backgroundColor: "var(--cream)", color: "var(--green-deep)" }} />
+              <input type="tel" placeholder="Телефон" className="w-full rounded-xl px-4 py-2.5 text-sm font-golos focus:outline-none focus:ring-2 border" style={{ borderColor: "var(--green-pale)", backgroundColor: "var(--cream)", color: "var(--green-deep)" }} />
+              <textarea rows={3} placeholder="Ваш вопрос или заказ" className="w-full rounded-xl px-4 py-2.5 text-sm font-golos focus:outline-none focus:ring-2 border resize-none" style={{ borderColor: "var(--green-pale)", backgroundColor: "var(--cream)", color: "var(--green-deep)" }} />
+              <button className="w-full py-3 rounded-xl font-golos font-medium transition-colors" style={{ backgroundColor: "var(--green-deep)", color: "var(--cream)" }}>
                 Отправить сообщение
               </button>
             </div>
           </div>
-
           <div className="rounded-2xl p-5 text-center" style={{ backgroundColor: "var(--green-pale)" }}>
             <div className="text-3xl mb-2">🌿</div>
             <p className="font-cormorant text-lg font-medium mb-1" style={{ color: "var(--green-deep)" }}>Приезжайте к нам!</p>
@@ -552,6 +949,8 @@ function ContactsPage() {
     </div>
   );
 }
+
+// ─── FOOTER ───────────────────────────────────────────────────────────────────
 
 function Footer({ onNav }: { onNav: (t: Tab) => void }) {
   return (
@@ -595,25 +994,62 @@ function Footer({ onNav }: { onNav: (t: Tab) => void }) {
   );
 }
 
+// ─── ROOT ─────────────────────────────────────────────────────────────────────
+
 export default function Index() {
   const [activeTab, setActiveTab] = useState<Tab>("home");
+  const [cart, setCart] = useState<CartItem[]>([]);
+  const [cartOpen, setCartOpen] = useState(false);
 
   const handleNav = (tab: Tab) => {
     setActiveTab(tab);
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
+  const handleAddToCart = (item: Omit<CartItem, "qty">) => {
+    setCart((prev) => {
+      const existing = prev.find((i) => i.name === item.name);
+      if (existing) {
+        return prev.map((i) => i.name === item.name ? { ...i, qty: i.qty + 1 } : i);
+      }
+      return [...prev, { ...item, qty: 1 }];
+    });
+  };
+
+  const handleChangeQty = (name: string, delta: number) => {
+    setCart((prev) =>
+      prev
+        .map((i) => i.name === name ? { ...i, qty: i.qty + delta } : i)
+        .filter((i) => i.qty > 0)
+    );
+  };
+
+  const handleRemove = (name: string) => {
+    setCart((prev) => prev.filter((i) => i.name !== name));
+  };
+
+  const cartCount = cart.reduce((s, i) => s + i.qty, 0);
+
   return (
     <div className="min-h-screen flex flex-col" style={{ backgroundColor: "var(--cream)" }}>
-      <Header active={activeTab} onNav={handleNav} />
+      <Header active={activeTab} onNav={handleNav} cartCount={cartCount} onCartOpen={() => setCartOpen(true)} />
       <main className="flex-1">
         {activeTab === "home" && <HomePage onNav={handleNav} />}
-        {activeTab === "catalog" && <CatalogPage />}
+        {activeTab === "catalog" && <CatalogPage onAddToCart={handleAddToCart} />}
         {activeTab === "delivery" && <DeliveryPage />}
         {activeTab === "useful" && <UsefulPage />}
         {activeTab === "contacts" && <ContactsPage />}
       </main>
       <Footer onNav={handleNav} />
+
+      {cartOpen && (
+        <CartPanel
+          cart={cart}
+          onClose={() => setCartOpen(false)}
+          onChangeQty={handleChangeQty}
+          onRemove={handleRemove}
+        />
+      )}
     </div>
   );
 }
